@@ -41,6 +41,7 @@ export class AppComponent implements OnInit, OnDestroy{
 
         this.showSnackbar(`Logged in as ${user.github.displayName}`);
       } else {
+        this.userId = null;
         this.showSnackbar(`Logged out.`);
       }
     });
@@ -52,6 +53,10 @@ export class AppComponent implements OnInit, OnDestroy{
     this.authSubscriber.unsubscribe();
     this.$searching.unsubscribe();
     this.$completed.unsubscribe();
+  }
+
+  removeRepo(repoId) {
+    this.af.database.object(`/users/${this.userId}/watch/${repoId}`).remove();
   }
 
   showSnackbar(message: string) {

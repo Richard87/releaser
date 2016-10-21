@@ -38,6 +38,25 @@ app-root {
 
 md-sidenav-layout {
   height: calc(100% - 64px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center_content {
+  padding-top: 1em;
+  display: flex;
+  margin: auto;
+  @media(max-width: 640px) {
+    width: 100%;
+  }
+  @media(min-width: 641px) {
+    width: 50%;
+  }
+}
+md-card {
+  width:100%;
 }
 
 md-sidenav {
