@@ -61,7 +61,8 @@ export class AppComponent implements OnInit, OnDestroy{
 
   showSnackbar(message: string) {
     let config = new MdSnackBarConfig(this.viewContainerRef);
-    this.snackBar.open(message, `Close`, config);
+    let sb = this.snackBar.open(message, `Close`, config);
+    setTimeout(() => sb.dismiss(), 5000);
   }
 
   public doGithubLogin() {
