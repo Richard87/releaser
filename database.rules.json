@@ -7,7 +7,7 @@
       }
     },
     "latest_feeds": {
-      ".read" : "false",
+      ".read" : "true",
       ".write": "false"
     }
   }
