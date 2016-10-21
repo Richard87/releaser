@@ -1,6 +1,14 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+    "users": {
+      "$user": {
+        ".read" : "$user == auth.uid",
+        ".write": "$user == auth.uid"
+      }
+    },
+    "latest_feeds": {
+      ".read" : "false",
+      ".write": "false"
+    }
   }
 }
