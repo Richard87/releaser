@@ -6,6 +6,7 @@ import { AngularFireModule, AuthMethods } from 'angularfire2';
 
 
 import { AppComponent } from './app.component';
+import {CommonModule, NgIf} from "@angular/common";
 
 // Must export the config
 export const firebaseConfig = {
@@ -29,6 +30,7 @@ export const firebaseAuthConfig = {
     BrowserModule,
     FormsModule,
     HttpModule,
+    CommonModule,
     AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
   ],
   providers: [],

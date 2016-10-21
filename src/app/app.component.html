@@ -1,3 +1,9 @@
 <h1>
   A Notificationsystem for github releases!
 </h1>
+
+<div *ngIf="auth | async">You are logged in</div>
+<div *ngIf="!(auth | async)">Please log in</div>
+
+<button (click)="doGithubLogin()">Login Github</button>
+<button (click)="doLogout()">Logout</button>
