@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AngularFireModule, AuthMethods } from 'angularfire2';
 
+
 import { AppComponent } from './app.component';
 
 // Must export the config

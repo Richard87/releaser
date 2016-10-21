@@ -2,4 +2,7 @@
   "dependencies": {
     "firebase": "registry:npm/firebase#3.0.5+20160723033700"
   },
+  "globalDependencies": {
+    "firebase": "registry:dt/firebase#2.4.1+20160412125105"
+  }
 }
