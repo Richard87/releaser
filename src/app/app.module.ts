@@ -3,11 +3,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AngularFireModule, AuthMethods } from 'angularfire2';
-import {MaterialModule, MdCoreModule, MdButton} from '@angular/material';
+import {MaterialModule} from '@angular/material';
 
 import { AppComponent } from './app.component';
 import {CommonModule, NgIf} from "@angular/common";
-import {SearchComponent} from "./Github/search.component";
 import {SearchService} from "./Github/search.service";
 
 // Must export the config
@@ -26,7 +25,7 @@ export const firebaseAuthConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent, SearchComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

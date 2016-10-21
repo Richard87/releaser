@@ -1,25 +1,32 @@
-<md-toolbar [color]="primary">
-    <span>A Notification system for github releases!</span>
-    <span *ngIf="auth| async">Logged in as {{ user.github.displayName }}</span>
+<md-toolbar color="primary">
+    <span>Releaser</span>
+    <span class="middle_spacer"></span>
     <span>
-    <button md-button color="primary" *ngIf="!(auth | async)" (click)="doGithubLogin()">Login Github</button>
-    <button md-button color="warn" *ngIf="auth | async" (click)="doLogout()">Logout</button>
-  </span>
+        <button md-button color="primary" *ngIf="!(auth | async)" (click)="doGithubLogin()">Login Github</button>
+        <button md-button *ngIf="auth | async" (click)="doLogout()">Logout</button>
+    </span>
 </md-toolbar>
-<md-card class="demo-card demo-basic">
-    <md-toolbar color="primary">Watchlist:</md-toolbar>
-    <md-card-content>
-        <md-list>
-            <md-list-item *ngFor="let item of list | async">
-                {{item.$value}} {{item.$key}}
-            </md-list-item>
-        </md-list>
-    </md-card-content>
-</md-card>
-<md-card class="demo-card demo-basic">
-    <md-toolbar color="primary">Add repo:</md-toolbar>
-    <md-card-content>
-        <search (onSearch)="onSearch($event)"></search>
+<md-sidenav-layout>
+    <md-card class="demo-card demo-basic">
+        <md-toolbar>Watchlist:</md-toolbar>
+        <md-card-content>
+            <md-list>
+                <md-list-item *ngFor="let item of list | async">
+                    {{item.$value}} {{item.$key}}
+                </md-list-item>
+            </md-list>
+            <button md-mini-fab md-button (click)="sidenav.open()">
+                <md-icon class="md-24">add</md-icon>
+            </button>
+        </md-card-content>
+    </md-card>
+
+    <md-sidenav #sidenav align="end">
+        <md-toolbar>Add repo:</md-toolbar>
+        <md-input #value placeholder="Search for GitHub repositories..."
+                #search
+                (change)="onSearch(search.value)"></md-input>
+        <md-progress-bar *ngIf="searching" mode="indeterminate"></md-progress-bar>
 
         <md-list>
             <md-list-item *ngFor="let repo of repositories | async">
@@ -28,6 +35,10 @@
                     <md-icon class="md-24">add</md-icon>
                 </button>
             </md-list-item>
+
+            <button md-mini-fab md-button (click)="sidenav.close()">
+                <md-icon class="md-24">close</md-icon>
+            </button>
         </md-list>
-    </md-card-content>
-</md-card>
+    </md-sidenav>
+</md-sidenav-layout>

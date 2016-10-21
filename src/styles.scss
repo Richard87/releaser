@@ -10,10 +10,10 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue.
 $app-primary: md-palette($md-indigo);
-$app-accent:  md-palette($md-pink, A200, A100, A400);
+$app-accent: md-palette($md-pink, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
-$app-warn:    md-palette($md-red);
+$app-warn: md-palette($md-red);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $app-theme: md-light-theme($app-primary, $app-accent, $app-warn);
@@ -22,3 +22,40 @@ $app-theme: md-light-theme($app-primary, $app-accent, $app-warn);
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($app-theme);
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+}
+
+app-root {
+  height: 100%;
+}
+
+md-sidenav-layout {
+  height: calc(100% - 64px);
+}
+
+md-sidenav {
+  @media(max-width: 640px) {
+    width: 100%;
+  }
+  @media(min-width: 641px) and (max-width: 800px) {
+    width: 50%;
+  }
+  @media(min-width: 801px) {
+    width: 33%;
+  }
+
+  md-input {
+    width:100%;
+    margin-top:1em;
+  }
+}
+.middle_spacer {
+  flex: 1 1 auto;
+}
