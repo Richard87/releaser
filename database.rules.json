@@ -1,14 +1,16 @@
-{
-  "rules": {
-    "users": {
-      "$user": {
-        ".read" : "$user == auth.uid",
-        ".write": "$user == auth.uid"
+  {
+    "rules": {
+      "users": {
+        "$user": {
+          ".read" : "$user == auth.uid",
+          ".write": "$user == auth.uid"
+        }
+      },
+      "latest_feeds": {
+          "$githubId": {
+            ".read" : true,
+            ".write": false
+          }
       }
-    },
-    "latest_feeds": {
-      ".read" : "true",
-      ".write": "false"
     }
   }
-}

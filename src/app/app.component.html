@@ -15,6 +15,7 @@
                 <md-list-item *ngFor="let item of list | async">
                     {{item.$value}}
                     <span class="middle_spacer"></span>
+                    <span style="color: #a0a0a0;">{{ (item.info | async)?.title}}</span>
                     <button md-button (click)="removeRepo(item.$key)">
                         Remove
                     </button>

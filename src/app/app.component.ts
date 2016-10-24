@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit, OnDestroy, ViewContainerRef} from '@angular/core';
 import {AngularFire, FirebaseAuth, AuthProviders, AuthMethods} from "angularfire2";
-import {Subscriber, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {ISubscription} from "rxjs/Subscription";
 import {SearchService, Repository} from "./Github/search.service";
 import {MdSnackBar, MdSnackBarConfig} from "@angular/material";
@@ -36,7 +36,12 @@ export class AppComponent implements OnInit, OnDestroy{
       console.log(user);
       if (user) {
         this.userId = user.uid;
-        this.list = this.af.database.list('/users/' + this.userId + '/watch');
+        this.list = this.af.database.list('/users/' + this.userId + '/watch').map((_watches) => {
+            return _watches.map((_watch) => {
+                _watch.info = this.af.database.object(`/latest_feeds/${_watch.$key}`);
+                return _watch;
+            })
+        });
         this.af.database.object("/users/" + this.userId + "/user",).update(user.github);
 
         this.showSnackbar(`Logged in as ${user.github.displayName}`);
