@@ -10,8 +10,6 @@ export class SearchService {
     API_URL = "";
 
     @Output()
-    public onSearch: EventEmitter<string> = new EventEmitter<string>();
-    @Output()
     public onComplete: EventEmitter<string> = new EventEmitter<string>();
 
     constructor(
@@ -19,10 +17,12 @@ export class SearchService {
     ) {}
 
     search(terms): Observable<Repository[]> {
-        this.onSearch.emit(terms);
+        if (!terms)
+            return Observable.of<Repository[]>([]);
+
         const searchURL = `https://api.github.com/search/repositories?q=${terms}&sort=stars`;
         return this._http
-            .get(searchURL)
+            .get(searchURL).cache()
             .map((response: Response) => {
                 this.onComplete.emit(response.json().items);
                 return response.json().items;

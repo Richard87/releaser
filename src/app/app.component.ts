@@ -1,9 +1,10 @@
-import {Component, Inject, OnInit, OnDestroy, ViewContainerRef} from '@angular/core';
+import {Component, Inject, OnInit, OnDestroy, ViewContainerRef, ViewChild} from '@angular/core';
 import {AngularFire, FirebaseAuth, AuthProviders, AuthMethods} from "angularfire2";
 import {Observable} from "rxjs";
 import {ISubscription} from "rxjs/Subscription";
-import {SearchService, Repository} from "./Github/search.service";
+import {Repository} from "./Github/search.service";
 import {MdSnackBar, MdSnackBarConfig} from "@angular/material";
+import {SearchComponent} from "./Github/search.component";
 
 @Component({
   selector: 'app-root',
@@ -11,19 +12,18 @@ import {MdSnackBar, MdSnackBarConfig} from "@angular/material";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy{
+  @ViewChild(SearchComponent) searchComponent: SearchComponent;
+
+
   authSubscriber: ISubscription;
-  repositories: Observable<Repository[]>;
+  repositories$: Observable<Repository[]>;
   private user;
   private list;
   private userId = "-";
-  private searching = false;
-  private $searching;
-  private $completed;
 
   constructor(
       private af: AngularFire,
       @Inject(FirebaseAuth) public auth: FirebaseAuth,
-      private searchService: SearchService,
       private snackBar: MdSnackBar,
       private viewContainerRef: ViewContainerRef
   ) {}
@@ -33,40 +33,33 @@ export class AppComponent implements OnInit, OnDestroy{
     this.authSubscriber = this.af.auth.subscribe(user => {
       this.user = user;
 
-      console.log(user);
       if (user) {
         this.userId = user.uid;
+        this.af.database.object("/users/" + this.userId + "/user",).update(user.github);
+        this.showSnackbar(`Logged in as ${user.github.email}`);
+
+
         this.list = this.af.database.list('/users/' + this.userId + '/watch').map((_watches) => {
             return _watches.map((_watch) => {
                 _watch.info = this.af.database.object(`/latest_feeds/${_watch.$key}`);
                 return _watch;
             })
         });
-        this.af.database.object("/users/" + this.userId + "/user",).update(user.github);
 
-        this.showSnackbar(`Logged in as ${user.github.displayName}`);
       } else {
-        this.userId = null;
         this.showSnackbar(`Logged out.`);
       }
     });
-    this.$searching = this.searchService.onSearch.subscribe(() => this.searching = true);
-    this.$completed = this.searchService.onComplete.subscribe(() => this.searching = false);
   }
 
   ngOnDestroy(): void {
     this.authSubscriber.unsubscribe();
-    this.$searching.unsubscribe();
-    this.$completed.unsubscribe();
   }
 
-  removeRepo(repoId) {
-    this.af.database.object(`/users/${this.userId}/watch/${repoId}`).remove();
-  }
 
   showSnackbar(message: string) {
     let config = new MdSnackBarConfig(this.viewContainerRef);
-    let sb = this.snackBar.open(message, `Close`, config);
+    let sb = this.snackBar.open(message, ``, config);
     setTimeout(() => sb.dismiss(), 5000);
   }
 
@@ -77,15 +70,17 @@ export class AppComponent implements OnInit, OnDestroy{
     })
   }
 
-  public onSearch(data) {
-    this.repositories = this.searchService.search(data);
+  public doLogout() {
+    this.auth.logout();
   }
 
+  public showSearch() {
+    this.searchComponent.show();
+  }
   public addRepo(repo: Repository) {
     this.af.database.object(`/users/${this.userId}/watch/${repo.id}`).set(repo.full_name);
   }
-
-  public doLogout() {
-    this.auth.logout();
+  removeRepo(repoId) {
+    this.af.database.object(`/users/${this.userId}/watch/${repoId}`).remove();
   }
 }

@@ -8,6 +8,7 @@ import {MaterialModule} from '@angular/material';
 import { AppComponent } from './app.component';
 import {CommonModule, NgIf} from "@angular/common";
 import {SearchService} from "./Github/search.service";
+import {SearchComponent} from "./Github/search.component";
 
 // Must export the config
 export const firebaseConfig = {
@@ -25,7 +26,7 @@ export const firebaseAuthConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent, SearchComponent
   ],
   imports: [
     BrowserModule,

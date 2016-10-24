@@ -8,56 +8,35 @@
 </md-toolbar>
 <md-sidenav-layout>
     <div class="center_content">
-    <md-card *ngIf="userId">
-        <md-toolbar>Watchlist:</md-toolbar>
-        <md-card-content>
-            <md-list>
-                <md-list-item *ngFor="let item of list | async">
-                    {{item.$value}}
+        <md-card *ngIf="userId">
+            <md-toolbar>Watchlist:</md-toolbar>
+            <md-card-content>
+                <md-list *ngIf="(list | async)?.length > 0">
+                    <md-list-item *ngFor="let item of list | async">
+                        <a target="_blank" href="https://github.com/{{item.$value}}">{{item.$value}}</a>
+                        <span class="middle_spacer"></span>
+                        <span><a target="_blank" style="color: #a0a0a0;" href="{{ (item.info | async)?.link}}">{{ (item.info | async)?.title}}</a></span>
+                        <button md-button (click)="removeRepo(item.$key)">
+                            Remove
+                        </button>
+                    </md-list-item>
+                </md-list>
+                <div style="text-align: right; margin: 1em 0;">
                     <span class="middle_spacer"></span>
-                    <span style="color: #a0a0a0;">{{ (item.info | async)?.title}}</span>
-                    <button md-button (click)="removeRepo(item.$key)">
-                        Remove
+                    <button md-fab (click)="showSearch()">
+                        <md-icon class="md-24">add</md-icon>
                     </button>
-                </md-list-item>
-            </md-list>
-            <div>
-                <span class="middle_spacer"></span>
-                <button md-fab (click)="sidenav.open()">
-                    <md-icon class="md-24">add</md-icon>
-                </button>
-            </div>
-        </md-card-content>
-    </md-card>
-    <md-card *ngIf="!userId">
-        <md-card-title>Welcome to Releaser</md-card-title>
-        <md-card-content>This is a simple script that wil email immediately if any of your selected repositories get a new release</md-card-content>
-        <md-card-actions>
-            <button md-raised-button color="accent" (click)="doGithubLogin()">Login or Signup with Github</button>
-        </md-card-actions>
-    </md-card>
+                </div>
+            </md-card-content>
+        </md-card>
+        <md-card *ngIf="!userId">
+            <md-card-title>Welcome to Releaser</md-card-title>
+            <md-card-content>
+                This is a simple app that emails you immediately if any of your selected repositories get a new
+                release<br><br>
+                <button md-raised-button color="accent" (click)="doGithubLogin()">Login or Signup with Github</button>
+            </md-card-content>
+        </md-card>
     </div>
-    <md-sidenav #sidenav align="end">
-        <md-toolbar>Add repo:</md-toolbar>
-        <md-input #value placeholder="Search for GitHub repositories..."
-                #search
-                (change)="onSearch(search.value)"></md-input>
-        <md-progress-bar *ngIf="searching" mode="indeterminate"></md-progress-bar>
-
-        <md-list>
-            <md-list-item *ngFor="let repo of repositories | async">
-                {{repo.full_name}}
-                <span class="middle_spacer"></span>
-                <button md-mini-fab (click)="addRepo(repo)">
-                    <md-icon class="md-24">add</md-icon>
-                </button>
-            </md-list-item>
-            <div>
-                <span class="middle_spacer"></span>
-                <button md-mini-fab (click)="sidenav.close()">
-                    <md-icon class="md-24">close</md-icon>
-                </button>
-            </div>
-        </md-list>
-    </md-sidenav>
+    <sidebar (onAdd)="addRepo($event)"></sidebar>
 </md-sidenav-layout>

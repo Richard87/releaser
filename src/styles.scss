@@ -63,11 +63,8 @@ md-sidenav {
   @media(max-width: 640px) {
     width: 100%;
   }
-  @media(min-width: 641px) and (max-width: 800px) {
+  @media(min-width: 641px){
     width: 50%;
-  }
-  @media(min-width: 801px) {
-    width: 33%;
   }
 
   md-input {
