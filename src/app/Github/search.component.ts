@@ -1,13 +1,12 @@
 
 import {Component} from "@angular/core/src/metadata/directives";
-import {Output, EventEmitter, ViewChild} from "@angular/core";
+import {Output, EventEmitter, ViewChild, ViewContainerRef} from "@angular/core";
 import {SearchService, Repository} from "./search.service";
 import {Observable} from "rxjs";
 import {MdToolbar, MdSidenav} from "@angular/material";
 @Component({
-    selector: "sidebar",
+    selector: "sidebarContent",
     template: `
-    <md-sidenav #sidenav align="end">
         <md-toolbar>Add repo:</md-toolbar>
         <div style="margin: 1em">
             <md-input #value placeholder="Search for GitHub repositories..."
@@ -25,21 +24,23 @@ import {MdToolbar, MdSidenav} from "@angular/material";
                 </md-list-item>
                 <div>
                     <span class="middle_spacer"></span>
-                    <button md-button (click)="sidenav.close()">close</button>
+                    <button md-button (click)="closeClicked.emit($event)">close</button>
                 </div>
             </md-list>
         </div>
-    </md-sidenav>
 `
 })
 export class SearchComponent{
     @Output() onAdd = new EventEmitter();
-    @ViewChild("sidenav") sidenav: MdSidenav;
+    @Output() closeClicked = new EventEmitter();
 
     searching = false;
     repositories$: Observable<Repository[]>;
 
-    constructor(private searchService:SearchService) {}
+    constructor(
+        private searchService:SearchService,
+        private viewContainerRef: ViewContainerRef
+    ) {}
 
     addRepo(repo: Repository) {
         this.onAdd.emit(repo);
@@ -49,9 +50,5 @@ export class SearchComponent{
         this.searching = true;
         this.repositories$ = this.searchService.search(data);
         this.repositories$.subscribe(() => {},() => {},() => this.searching = false);
-    }
-
-    public show() {
-        this.sidenav.open();
     }
 }

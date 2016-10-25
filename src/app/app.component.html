@@ -23,7 +23,7 @@
                 </md-list>
                 <div style="text-align: right; margin: 1em 0;">
                     <span class="middle_spacer"></span>
-                    <button md-fab (click)="showSearch()">
+                    <button md-fab (click)="sidenav.open()">
                         <md-icon class="md-24">add</md-icon>
                     </button>
                 </div>
@@ -38,5 +38,7 @@
             </md-card-content>
         </md-card>
     </div>
-    <sidebar (onAdd)="addRepo($event)"></sidebar>
+    <md-sidenav #sidenav align="end">
+        <sidebarContent (onAdd)="addRepo($event); sidenav.close()" (closeClicked)="sidenav.close()"></sidebarContent>
+    </md-sidenav>
 </md-sidenav-layout>

@@ -3,7 +3,7 @@ import {AngularFire, FirebaseAuth, AuthProviders, AuthMethods} from "angularfire
 import {Observable} from "rxjs";
 import {ISubscription} from "rxjs/Subscription";
 import {Repository} from "./Github/search.service";
-import {MdSnackBar, MdSnackBarConfig} from "@angular/material";
+import {MdSnackBar, MdSnackBarConfig, MdSidenav} from "@angular/material";
 import {SearchComponent} from "./Github/search.component";
 
 @Component({
@@ -12,9 +12,6 @@ import {SearchComponent} from "./Github/search.component";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy{
-  @ViewChild(SearchComponent) searchComponent: SearchComponent;
-
-
   authSubscriber: ISubscription;
   repositories$: Observable<Repository[]>;
   private user;
@@ -74,9 +71,6 @@ export class AppComponent implements OnInit, OnDestroy{
     this.auth.logout();
   }
 
-  public showSearch() {
-    this.searchComponent.show();
-  }
   public addRepo(repo: Repository) {
     this.af.database.object(`/users/${this.userId}/watch/${repo.id}`).set(repo.full_name);
   }
