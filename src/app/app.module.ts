@@ -6,7 +6,7 @@ import { AngularFireModule, AuthMethods } from 'angularfire2';
 import {MaterialModule} from '@angular/material';
 
 import { AppComponent } from './app.component';
-import {CommonModule, NgIf} from "@angular/common";
+import {CommonModule, NgIf, AsyncPipe} from "@angular/common";
 import {SearchService} from "./Github/search.service";
 import {SearchComponent} from "./Github/search.component";
 

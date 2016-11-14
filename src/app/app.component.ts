@@ -3,8 +3,7 @@ import {AngularFire, FirebaseAuth, AuthProviders, AuthMethods} from "angularfire
 import {Observable} from "rxjs";
 import {ISubscription} from "rxjs/Subscription";
 import {Repository} from "./Github/search.service";
-import {MdSnackBar, MdSnackBarConfig, MdSidenav} from "@angular/material";
-import {SearchComponent} from "./Github/search.component";
+import {MdSnackBar, MdSnackBarConfig} from "@angular/material";
 
 @Component({
   selector: 'app-root',

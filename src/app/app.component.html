@@ -15,7 +15,7 @@
                     <md-list-item *ngFor="let item of list | async">
                         <a target="_blank" href="https://github.com/{{item.$value}}">{{item.$value}}</a>
                         <span class="middle_spacer"></span>
-                        <span><a target="_blank" style="color: #a0a0a0;" href="{{ (item.info | async)?.link}}">{{ (item.info | async)?.title}}</a></span>
+                        <span><a target="_blank" style="color: #a0a0a0;" href="{{ (item.info | async)?.link}}">{{ (item.info | async)?.title || 'Loading'}}</a></span>
                         <button md-button (click)="removeRepo(item.$key)">
                             Remove
                         </button>
