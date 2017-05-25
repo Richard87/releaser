@@ -1,13 +1,12 @@
-import {Injectable, Inject, EventEmitter, ViewContainerRef} from '@angular/core';
-import {Http, Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
-import {Output} from "@angular/core/src/metadata/directives";
-import {MdSnackBar} from "@angular/material";
+
+
+import {EventEmitter, Injectable, Output} from "@angular/core";
+import {Http} from "@angular/http";
+import {Observable} from "rxjs/Observable";
+
 
 @Injectable()
 export class SearchService {
-    API_URL = "";
 
     @Output()
     public onComplete: EventEmitter<string> = new EventEmitter<string>();
@@ -22,8 +21,8 @@ export class SearchService {
 
         const searchURL = `https://api.github.com/search/repositories?q=${terms}&sort=stars`;
         return this._http
-            .get(searchURL).cache()
-            .map((response: Response) => {
+            .get(searchURL)
+            .map((response) => {
                 this.onComplete.emit(response.json().items);
                 return response.json().items;
             });

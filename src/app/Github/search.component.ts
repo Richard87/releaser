@@ -1,17 +1,17 @@
 
-import {Component} from "@angular/core/src/metadata/directives";
-import {Output, EventEmitter, ViewChild, ViewContainerRef} from "@angular/core";
-import {SearchService, Repository} from "./search.service";
-import {Observable} from "rxjs";
-import {MdToolbar, MdSidenav} from "@angular/material";
+import {Component, EventEmitter, Output} from "@angular/core";
+import {Observable} from "rxjs/Observable";
+import {Repository, SearchService} from "./search.service";
+
+
 @Component({
     selector: "sidebarContent",
     template: `
         <md-toolbar>Add repo:</md-toolbar>
         <div style="margin: 1em">
-            <md-input #value placeholder="Search for GitHub repositories..."
-                      #search
-                      (change)="onSearch(search.value)"></md-input>
+            <md-input-container style="width: 100%;">
+                <input mdInput #search placeholder="Search for GitHub repositories..." name="search" (change)="onSearch(search.value)">
+            </md-input-container>
             <md-progress-bar *ngIf="searching" mode="indeterminate"></md-progress-bar>
 
             <md-list>
@@ -38,8 +38,7 @@ export class SearchComponent{
     repositories$: Observable<Repository[]>;
 
     constructor(
-        private searchService:SearchService,
-        private viewContainerRef: ViewContainerRef
+        private searchService:SearchService
     ) {}
 
     addRepo(repo: Repository) {

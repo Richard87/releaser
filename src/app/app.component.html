@@ -2,14 +2,22 @@
     <span>Releaser</span>
     <span class="middle_spacer"></span>
     <span>
-        <button md-raised-button color="accent" *ngIf="!(auth | async)" (click)="doGithubLogin()">Login or Signup with Github</button>
-        <button md-button *ngIf="auth | async" (click)="doLogout()">Logout</button>
+        <button md-raised-button color="accent" *ngIf="!user" (click)="doGithubLogin()">Login or Signup with Github</button>
+        <button md-button *ngIf="user" (click)="doLogout()">Logout</button>
     </span>
 </md-toolbar>
-<md-sidenav-layout>
+<md-sidenav-container>
     <div class="center_content">
         <md-card *ngIf="userId">
-            <md-toolbar>Watchlist:</md-toolbar>
+            <md-toolbar>
+                Watchlist:
+                <span class="middle_spacer"></span>
+                <div>
+                    <button md-mini-fab (click)="sidenav.open()">
+                        <md-icon class="md-24">+</md-icon>
+                    </button>
+                </div>
+            </md-toolbar>
             <md-card-content>
                 <md-list *ngIf="(list | async)?.length > 0">
                     <md-list-item *ngFor="let item of list | async">
@@ -41,4 +49,4 @@
     <md-sidenav #sidenav align="end">
         <sidebarContent (onAdd)="addRepo($event); sidenav.close()" (closeClicked)="sidenav.close()"></sidebarContent>
     </md-sidenav>
-</md-sidenav-layout>
+</md-sidenav-container>

@@ -1,79 +1,78 @@
-import {Component, Inject, OnInit, OnDestroy, ViewContainerRef, ViewChild} from '@angular/core';
-import {AngularFire, FirebaseAuth, AuthProviders, AuthMethods} from "angularfire2";
-import {Observable} from "rxjs";
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ISubscription} from "rxjs/Subscription";
 import {Repository} from "./Github/search.service";
-import {MdSnackBar, MdSnackBarConfig} from "@angular/material";
+import {MdSnackBar} from "@angular/material";
+import {AngularFireAuth} from "angularfire2/auth";
+import {AngularFireDatabase} from "angularfire2/database";
+import * as firebase from 'firebase/app';
+import { ViewEncapsulation} from '@angular/core';
+
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css'],
+    encapsulation: ViewEncapsulation.None,
 })
-export class AppComponent implements OnInit, OnDestroy{
-  authSubscriber: ISubscription;
-  repositories$: Observable<Repository[]>;
-  private user;
-  private list;
-  private userId = "-";
+export class AppComponent implements OnInit, OnDestroy {
+    authSubscriber: ISubscription;
+    private user;
+    private list;
+    private userId = "-";
 
-  constructor(
-      private af: AngularFire,
-      @Inject(FirebaseAuth) public auth: FirebaseAuth,
-      private snackBar: MdSnackBar,
-      private viewContainerRef: ViewContainerRef
-  ) {}
+    constructor(private afAuth: AngularFireAuth,
+                private afDb: AngularFireDatabase,
+                public snackBar: MdSnackBar) {
+    }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
 
-    this.authSubscriber = this.af.auth.subscribe(user => {
-      this.user = user;
+        this.authSubscriber = this.afAuth.authState.subscribe(user => {
+            this.user = user;
 
-      if (user) {
-        this.userId = user.uid;
-        this.af.database.object("/users/" + this.userId + "/user",).update(user.github);
-        this.showSnackbar(`Logged in as ${user.github.email}`);
+            if (user) {
+                console.log(user);
+                this.userId = user.uid;
+                this.afDb.object(`/users/${this.userId}/user`).update(user.providerData[0]);
+                this.showSnackbar(`Logged in as ${user.providerData[0].displayName}`);
 
 
-        this.list = this.af.database.list('/users/' + this.userId + '/watch').map((_watches) => {
-            return _watches.map((_watch) => {
-                _watch.info = this.af.database.object(`/latest_feeds/${_watch.$key}`);
-                return _watch;
-            })
+                this.list = this.afDb.list('/users/' + this.userId + '/watch').map(_watches => {
+                    return _watches.map(_watch => {
+                        _watch.info = this.afDb.object(`/latest_feeds/${_watch.$key}`);
+                        return _watch;
+                    })
+                });
+
+            } else {
+                this.showSnackbar(`Logged out.`);
+            }
         });
+    }
 
-      } else {
-        this.showSnackbar(`Logged out.`);
-      }
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.authSubscriber.unsubscribe();
-  }
+    ngOnDestroy(): void {
+        this.authSubscriber.unsubscribe();
+    }
 
 
-  showSnackbar(message: string) {
-    let config = new MdSnackBarConfig(this.viewContainerRef);
-    let sb = this.snackBar.open(message, ``, config);
-    setTimeout(() => sb.dismiss(), 5000);
-  }
+    showSnackbar(message: string) {
+        let snack = this.snackBar.open(message);
+        setTimeout(() => snack.dismiss(), 3000);
+    }
 
-  public doGithubLogin() {
-    this.auth.login({
-      method:AuthMethods.Popup,
-      provider: AuthProviders.Github
-    })
-  }
+    public doGithubLogin() {
+        this.afAuth.auth.signInWithPopup(new firebase.auth.GithubAuthProvider());
+    }
 
-  public doLogout() {
-    this.auth.logout();
-  }
+    public doLogout() {
+        this.afAuth.auth.signOut();
+    }
 
-  public addRepo(repo: Repository) {
-    this.af.database.object(`/users/${this.userId}/watch/${repo.id}`).set(repo.full_name);
-  }
-  removeRepo(repoId) {
-    this.af.database.object(`/users/${this.userId}/watch/${repoId}`).remove();
-  }
+    public addRepo(repo: Repository) {
+        this.afDb.object(`/users/${this.userId}/watch/${repo.id}`).set(repo.full_name);
+    }
+
+    removeRepo(repoId) {
+        this.afDb.object(`/users/${this.userId}/watch/${repoId}`).remove();
+    }
 }
