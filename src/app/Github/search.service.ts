@@ -7,6 +7,7 @@ import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class SearchService {
+    readonly searchPath = 'https://api.github.com/search/repositories';
 
     @Output()
     public onComplete: EventEmitter<string> = new EventEmitter<string>();
@@ -19,7 +20,7 @@ export class SearchService {
         if (!terms)
             return Observable.of<Repository[]>([]);
 
-        const searchURL = `https://api.github.com/search/repositories?q=${terms}&sort=stars`;
+        const searchURL = `${this.searchPath}?q=${terms}+fork:true&sort=stars`;
         return this._http
             .get(searchURL)
             .map((response) => {
