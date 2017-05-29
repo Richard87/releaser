@@ -1,8 +1,8 @@
 
 
-import {EventEmitter, Injectable, Output} from "@angular/core";
-import {Http} from "@angular/http";
-import {Observable} from "rxjs/Observable";
+import {EventEmitter, Injectable, Output} from '@angular/core';
+import {Http} from '@angular/http';
+import {Observable} from 'rxjs/Observable';
 
 
 @Injectable()

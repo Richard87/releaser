@@ -1,6 +1,6 @@
-<md-toolbar color="primary">
-    <span>Releaser</span>
-    <span class="middle_spacer"></span>
+<md-toolbar color="primary" style="align-content: center">
+    <span style="line-height: 1.8em;">Releaser for GitHub</span>
+    <!--<span class="middle_spacer"></span>-->
     <span>
         <button md-raised-button color="accent" *ngIf="!user" (click)="doGithubLogin()">Login or Signup with Github</button>
         <button md-button *ngIf="user" (click)="doLogout()">Logout</button>
