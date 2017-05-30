@@ -1,6 +1,7 @@
 # Releaser
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.18.
+A small Angular4/Firebase app that monitors GitHub repositories for new releases, and sends you an email whenever it does :)
+*(Note the code that does the actuall processing of new Repos and sending email is not up-to-date)*
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
