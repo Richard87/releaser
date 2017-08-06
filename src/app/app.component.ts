@@ -17,9 +17,9 @@ import 'rxjs/add/operator/map'
 })
 export class AppComponent implements OnInit, OnDestroy {
     authSubscriber: ISubscription;
-    private user;
-    private list;
-    private userId = '-';
+    public user;
+    public list;
+    public userId = '-';
 
     constructor(private afAuth: AngularFireAuth,
                 private afDb: AngularFireDatabase,
