@@ -35,7 +35,8 @@ export class AppComponent implements OnInit, OnDestroy {
                 console.log(user);
                 this.userId = user.uid;
                 this.afDb.object(`/users/${this.userId}/user`).update(user.providerData[0]);
-                this.showSnackbar(`Logged in as ${user.providerData[0].displayName}`);
+                let name = user.providerData[0].displayName ? user.providerData[0].displayName : user.providerData[0].email;
+                this.showSnackbar(`Logged in as ${name}`);
 
 
                 this.list = this.afDb.list('/users/' + this.userId + '/watch').map(_watches => {
