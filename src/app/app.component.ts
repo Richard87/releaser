@@ -1,11 +1,12 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ISubscription} from "rxjs/Subscription";
-import {Repository} from "./Github/search.service";
-import {MdSnackBar} from "@angular/material";
-import {AngularFireAuth} from "angularfire2/auth";
-import {AngularFireDatabase} from "angularfire2/database";
+import {ISubscription} from 'rxjs/Subscription';
+import {Repository} from './Github/search.service';
+import {MdSnackBar} from '@angular/material';
+import {AngularFireAuth} from 'angularfire2/auth';
+import {AngularFireDatabase} from 'angularfire2/database';
 import * as firebase from 'firebase/app';
 import { ViewEncapsulation} from '@angular/core';
+import 'rxjs/add/operator/map'
 
 
 @Component({
@@ -18,7 +19,7 @@ export class AppComponent implements OnInit, OnDestroy {
     authSubscriber: ISubscription;
     private user;
     private list;
-    private userId = "-";
+    private userId = '-';
 
     constructor(private afAuth: AngularFireAuth,
                 private afDb: AngularFireDatabase,
