@@ -34,8 +34,10 @@ export class AppComponent implements OnInit, OnDestroy {
             if (user) {
                 console.log(user);
                 this.userId = user.uid;
-                this.afDb.object(`/users/${this.userId}/user`).update(user.providerData[0]);
-                let name = user.providerData[0].displayName ? user.providerData[0].displayName : user.providerData[0].email;
+                const providerData = user.providerData[0];
+                const name = providerData.displayName ? providerData.displayName : providerData.email;
+
+                this.afDb.object(`/users/${this.userId}/user`).update(providerData);
                 this.showSnackbar(`Logged in as ${name}`);
 
 
