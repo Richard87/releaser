@@ -1,7 +1,7 @@
 # Releaser
 
 A small Angular4/Firebase app that monitors GitHub repositories for new releases, and sends you an email whenever it does :)
-*(Note the code that does the actuall processing of new Repos and sending email is not up-to-date)*
+*(Note the code that does the actual processing of new repos and sending email is not up-to-date)*
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
@@ -25,7 +25,7 @@ Before running the tests make sure you are serving the app via `ng serve`.
 
 ## Deploying to Github Pages
 
-Run `ng github-pages:deploy` to deploy to Github Pages.
+Run `ng github-pages:deploy` to deploy to GitHub Pages.
 
 ## Further help
 
