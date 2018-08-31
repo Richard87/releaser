@@ -1,3 +1,8 @@
+# ABANDONED!
+There where to many flawes in the arcitecture that would require a rewrite, and there are so many better projects out there, that I reccomend some of those :)
+
+For example here are many examples: https://stackoverflow.com/questions/20839622/notifications-for-new-github-project-releases
+
 # Releaser
 
 A small Angular4/Firebase app that monitors GitHub repositories for new releases, and sends you an email whenever it does :)
